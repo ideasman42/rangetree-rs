@@ -1,0 +1,16 @@
+[package]
+name = "rangetree"
+version = "0.1.0"
+authors = ["Campbell Barton <ideasman42@gmail.com>"]
+
+description = "Range-tree for storing non-overlapping scalar ranges."
+
+homepage = "https://github.com/ideasman42/rangetree-rs"
+repository = "https://github.com/ideasman42/rangetree-rs"
+
+readm = "readme.rst"
+
+license = "Apache-2.0"
+
+[dependencies]
+
