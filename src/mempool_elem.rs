@@ -1,6 +1,12 @@
 // Apache License, Version 2.0
 // (c) Campbell Barton, 2016
 
+/// This module handles many small allocations of the same type
+/// using memory chunks and a single linked list for a free-chain of elements.
+///
+/// Users of this API need to define get/set methods
+/// so they can be members of the free-chain.
+
 use std::ptr;
 
 pub trait MemElemUtils {
@@ -23,9 +29,12 @@ struct MemChunk<TElem: MemElem> {
 }
 
 pub struct MemPool<TElem: MemElem> {
+    /// Data storage.
     chunks: Vec<MemChunk<TElem>>,
+    /// Number of elements per chunk.
     chunk_size: usize,
-    // number of elements per chunk
+    /// Single linked list of freed elements to be reused.
+    /// `free_ptr_get` is used to store the *chain* terminating at `null`.
     free: *mut TElem,
 }
 
