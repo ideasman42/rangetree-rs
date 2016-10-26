@@ -7,7 +7,7 @@ The underlying representation is a red-black tree for fast manipulation.
 
 
 Usage
-=====
+-----
 
 This may be used for tracking free ID's or ranges.
 
@@ -16,8 +16,8 @@ so any type with a ``One`` and ``Zero`` trait (along with addition and subtracti
 may be used.
 
 
-TODO
-====
+Further Work
+------------
 
 While the API is complete on a basic level,
 there are some additions that could be useful.
@@ -29,6 +29,6 @@ there are some additions that could be useful.
 
 
 License
-=======
+-------
 
 Apache 2.0, see ``LICENSE`` file.
