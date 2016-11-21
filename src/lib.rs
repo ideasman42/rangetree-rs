@@ -119,7 +119,7 @@ mod types {
                 range: [TOrd::zero(), TOrd::zero()],
                 left: ptr::null_mut(),
                 right: ptr::null_mut(),
-                // value never used
+                // always overwritten when added to the tree
                 color: false,
             }
         }
