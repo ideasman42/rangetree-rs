@@ -99,7 +99,7 @@ impl <TElem: MemElem> MemPool<TElem> {
             let elem = self.free;
             unsafe {
                 self.free = (*elem).free_ptr_get();
-                (*elem) = from;
+                ptr::write(elem, from);
             }
             return unsafe { &mut *elem };
         }

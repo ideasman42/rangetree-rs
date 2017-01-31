@@ -1,6 +1,6 @@
 [package]
 name = "rangetree"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Campbell Barton <ideasman42@gmail.com>"]
 
 description = "Range-tree for storing non-overlapping scalar ranges."
