@@ -336,12 +336,7 @@ mod rb {
 
     fn is_red<TOrd: RType>(node: *mut Node<TOrd>) -> bool
     {
-        if !node.is_null() {
-            if unsafe { (*node).color } == RED {
-                return true;
-            }
-        }
-        false
+        !node.is_null() && unsafe { (*node).color } == RED
     }
 
     fn key_cmp<TOrd: RType>(
