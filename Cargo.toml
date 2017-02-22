@@ -13,5 +13,8 @@ readme = "readme.rst"
 
 license = "Apache-2.0"
 
+[badges]
+travis-ci = { repository = "ideasman42/rangetree-rs" }
+
 [dependencies]
 
