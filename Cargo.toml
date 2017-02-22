@@ -2,16 +2,13 @@
 name = "rangetree"
 version = "0.1.2"
 authors = ["Campbell Barton <ideasman42@gmail.com>"]
-
 description = "Range-tree for storing non-overlapping scalar ranges."
-
 documentation = "https://docs.rs/rangetree"
 homepage = "https://github.com/ideasman42/rangetree-rs"
 repository = "https://github.com/ideasman42/rangetree-rs"
-
 readme = "readme.rst"
-
 license = "Apache-2.0"
+categories = ["algorithms", "data-structures"]
 
 [badges]
 travis-ci = { repository = "ideasman42/rangetree-rs" }
