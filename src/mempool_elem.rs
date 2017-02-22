@@ -74,11 +74,11 @@ impl <TElem: MemElem> MemPool<TElem> {
             }
             let chunk = self.chunks.last_mut().unwrap();
             chunk.data.push(TElem::default());
-            return chunk.data.last_mut().unwrap();
+            chunk.data.last_mut().unwrap()
         } else {
             let elem = self.free;
             self.free = unsafe { (*elem).free_ptr_get() };
-            return unsafe { &mut *elem };
+            unsafe { &mut *elem }
         }
     }
 
@@ -94,14 +94,14 @@ impl <TElem: MemElem> MemPool<TElem> {
             }
             let chunk = self.chunks.last_mut().unwrap();
             chunk.data.push(from);
-            return chunk.data.last_mut().unwrap();
+            chunk.data.last_mut().unwrap()
         } else {
             let elem = self.free;
             unsafe {
                 self.free = (*elem).free_ptr_get();
                 ptr::write(elem, from);
             }
-            return unsafe { &mut *elem };
+            unsafe { &mut *elem }
         }
     }
 

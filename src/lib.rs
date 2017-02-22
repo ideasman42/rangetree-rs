@@ -100,7 +100,7 @@ mod types {
         fn free_ptr_get(
             &self,
         ) -> *mut Node<TOrd> {
-            return self.next;
+            self.next
         }
         fn free_ptr_set(
             &mut self,
@@ -341,14 +341,14 @@ mod rb {
                 return true;
             }
         }
-        return false;
+        false
     }
 
     fn key_cmp<TOrd: RType>(
         key1: &TOrd,
         key2: &TOrd,
     ) -> i32 {
-        return if key1 == key2 {
+        if key1 == key2 {
             0
         } else {
             if key1 < key2 {
@@ -356,7 +356,7 @@ mod rb {
             } else {
                 1
             }
-        };
+        }
     }
 
     fn rotate_left<TOrd: RType>(
@@ -368,7 +368,7 @@ mod rb {
         right.left = left;
         right.color = left.color;
         left.color = RED;
-        return right;
+        right
     }
 
     fn rotate_right<TOrd: RType>(
@@ -380,7 +380,7 @@ mod rb {
         left.right = right;
         left.color = right.color;
         right.color = RED;
-        return left;
+        left
     }
 
     fn flip_color<TOrd: RType>(
@@ -407,7 +407,7 @@ mod rb {
             node = rotate_left(node);
             flip_color(node);
         }
-        return node;
+        node
     }
 
     fn move_red_to_right<TOrd: RType>(
@@ -420,7 +420,7 @@ mod rb {
             node = rotate_right(node);
             flip_color(node);
         }
-        return node;
+        node
     }
 
     pub fn insert_root<TOrd: RType>(
@@ -459,7 +459,7 @@ mod rb {
                 flip_color(node);
             }
 
-            return node;
+            node
         }
 
         unsafe {
@@ -467,7 +467,7 @@ mod rb {
             root = insert_recursive(root, node_to_insert);
             (*root).color = BLACK;
         }
-        return root;
+        root
     }
 
     fn fixup_remove<TOrd: RType>(
@@ -483,7 +483,7 @@ mod rb {
             if is_red((*node).left) && is_red((*node).right) {
                 flip_color(node);
             }
-            return node;
+            node
         }
     }
 
@@ -503,7 +503,7 @@ mod rb {
 
             let (node_left, node_free) = pop_min_recursive((*node).left);
             (*node).left = node_left;
-            return (fixup_remove(node), node_free);
+            (fixup_remove(node), node_free)
         }
     }
 
@@ -563,7 +563,7 @@ mod rb {
                 }
                 // 'node' removed
             }
-            return fixup_remove(node);
+            fixup_remove(node)
         }
 
         unsafe {
@@ -572,7 +572,7 @@ mod rb {
                 (*root).color = BLACK;
             }
         }
-        return root;
+        root
     }
 
     pub fn get_or_lower<TOrd: RType>(
@@ -588,7 +588,7 @@ mod rb {
             // return best node and key_lower
             let cmp_lower = key_cmp(key!(*n), &key);
             if cmp_lower == 0 {
-                return n;  // exact match
+                n // exact match
             } else if cmp_lower == -1 {
                 debug_assert!(key!(*n) <= &key);
                 // n is greater than our best so far
@@ -598,12 +598,12 @@ mod rb {
                         return n_test;
                     }
                 }
-                return n;
+                n
             } else {  // -1
                 if !(*n).left.is_null() {
                     return get_or_lower_recursive((*n).left, key);
                 }
-                return ptr::null_mut();
+                ptr::null_mut()
             }
         }
 
@@ -612,7 +612,7 @@ mod rb {
                 return get_or_lower_recursive(root, key);
             }
         }
-        return ptr::null_mut();
+        ptr::null_mut()
     }
 
     // External tree API
@@ -629,7 +629,7 @@ mod rb {
             // return best node and key_upper
             let cmp_upper = key_cmp(key!(*n), &key);
             if cmp_upper == 0 {
-                return n;  // exact match
+                n // exact match
             } else if cmp_upper == 1 {
                 debug_assert!(key!(*n) >= &key);
                 // n is lower than our best so far
@@ -639,12 +639,12 @@ mod rb {
                         return n_test;
                     }
                 }
-                return n;
+                n
             } else {  // -1
                 if !(*n).right.is_null() {
                     return get_or_upper_recursive((*n).right, key);
                 }
-                return ptr::null_mut();
+                ptr::null_mut()
             }
         }
 
@@ -653,7 +653,7 @@ mod rb {
                 return get_or_upper_recursive(root, key);
             }
         }
-        return ptr::null_mut();
+        ptr::null_mut()
     }
 
     pub fn is_balanced<TOrd: RType>(
@@ -670,8 +670,8 @@ mod rb {
             if !is_red(node) {
                 black -= 1;
             }
-            return is_balanced_recursive(unsafe { (*node).left }, black) &&
-                   is_balanced_recursive(unsafe { (*node).right }, black);
+            is_balanced_recursive(unsafe { (*node).left }, black) &&
+            is_balanced_recursive(unsafe { (*node).right }, black)
         }
 
         let mut black: isize = 0;
@@ -682,7 +682,7 @@ mod rb {
             }
             node = unsafe { (*node).left };
         }
-        return is_balanced_recursive(root, black);
+        is_balanced_recursive(root, black)
     }
 
 
@@ -703,7 +703,7 @@ impl<TOrd: RType> RangeTree<TOrd> {
         &mut self,
         node_data: Node<TOrd>,
     ) -> *mut Node<TOrd> {
-        return self.node_pool.alloc_elem_from(node_data);
+        self.node_pool.alloc_elem_from(node_data)
     }
     #[inline]
     fn node_free(
@@ -847,7 +847,7 @@ impl<TOrd: RType> RangeTree<TOrd> {
                     return node
                 }
             }
-            return ptr::null_mut();
+            ptr::null_mut()
         } else {
             let mut node = self.list.first;
             while !node.is_null() {
@@ -858,7 +858,7 @@ impl<TOrd: RType> RangeTree<TOrd> {
                 }
                 node = unsafe { (*node).next };
             }
-            return ptr::null_mut();
+            ptr::null_mut()
         }
     }
 
@@ -896,7 +896,7 @@ impl<TOrd: RType> RangeTree<TOrd> {
                 }
             }
         }
-        return (ptr::null_mut(), ptr::null_mut());
+        (ptr::null_mut(), ptr::null_mut())
     }
 
     /// Create a new range tree.
@@ -911,7 +911,7 @@ impl<TOrd: RType> RangeTree<TOrd> {
         if !full {
             r.node_add_front(range);
         }
-        return r;
+        r
     }
 
     /// Clear an existing range tree.
@@ -977,9 +977,9 @@ impl<TOrd: RType> RangeTree<TOrd> {
         let node = self.find_node_from_value(&value);
         if !node.is_null() {
             self.take_impl(value, node);
-            return true;
+            true
         } else {
-            return false;
+            false
         }
     }
 
@@ -997,9 +997,9 @@ impl<TOrd: RType> RangeTree<TOrd> {
                     (*self.list.first).range[0] += TOrd::one();
                 }
             }
-            return Some(value);
+            Some(value)
         } else {
-            return None;
+            None
         }
     }
 
@@ -1014,7 +1014,7 @@ impl<TOrd: RType> RangeTree<TOrd> {
             return true;
         }
         let node = self.find_node_from_value(&value);
-        return !node.is_null();
+        !node.is_null()
     }
 
     /// Check if no values in the tree are taken.
@@ -1024,16 +1024,16 @@ impl<TOrd: RType> RangeTree<TOrd> {
         if self.list.first.is_null() {
             return false;  // NULL
         }
-        return (self.list.first == self.list.last) &&
-               (unsafe { self.range[0] == (*self.list.first).range[0] }) &&
-               (unsafe { self.range[1] == (*self.list.first).range[1] });
+        (self.list.first == self.list.last) &&
+        (unsafe { self.range[0] == (*self.list.first).range[0] }) &&
+        (unsafe { self.range[1] == (*self.list.first).range[1] })
     }
 
     /// Check if all values in the tree are taken.
     pub fn is_full(
         &self,
     ) -> bool {
-        return self.list.first.is_null();
+        self.list.first.is_null()
     }
 
     /// Release a value that has been taken.
@@ -1146,7 +1146,7 @@ impl<TOrd: RType> RangeTree<TOrd> {
             }
         }
 
-        return ret;
+        ret
     }
 
 
@@ -1173,7 +1173,7 @@ impl<TOrd: RType> RangeTree<TOrd> {
             }
         }
 
-        return ret;
+        ret
     }
 
     #[allow(dead_code)]
