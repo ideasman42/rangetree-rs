@@ -1,7 +1,7 @@
 // Apache License, Version 2.0
 // (c) Campbell Barton, 2016
 
-/// RangeTree (1d) for integer values.
+/// `RangeTree` (1d) for integer values.
 ///
 
 mod mempool_elem;
