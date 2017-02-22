@@ -10,15 +10,15 @@ fn test_basic_take_release() {
     let mut r: RangeTree<i32> = RangeTree::new([0, 10], false);
 
     let i = r.take_any().unwrap();
-    assert!(i == 0);
+    assert_eq!(i, 0);
     assert!(!r.has(i));
 
     let i = r.take_any().unwrap();
-    assert!(i == 1);
+    assert_eq!(i, 1);
     r.release(0);
 
     let i = r.take_any().unwrap();
-    assert!(i == 0);
+    assert_eq!(i, 0);
     assert!(!r.has(i));
 }
 
@@ -27,9 +27,9 @@ fn test_take_all() {
     let mut r: RangeTree<u8> = RangeTree::new([0, 255], false);
     assert!(r.is_empty());
     for i in 0..255 {
-        assert!(i == r.take_any().unwrap());
+        assert_eq!(i, r.take_any().unwrap());
     }
-    assert!(255 == r.take_any().unwrap());
+    assert_eq!(255, r.take_any().unwrap());
     assert!(!r.is_empty());
 
     for i in 0..255 {
@@ -38,7 +38,7 @@ fn test_take_all() {
 
     // take all again
     for i in 0..255 {
-        assert!(i == r.take_any().unwrap());
+        assert_eq!(i, r.take_any().unwrap());
     }
     // leave 255 in
     for i in 0..255 {
@@ -78,27 +78,32 @@ fn test_complex() {
         for i in &[-10, 10, 11] {
             r.take(*i);
         }
-        assert!(r.ranges_taken_as_vec().as_slice() == [[-10_i32, -10], [10, 11]]);
+        assert_eq!(r.ranges_taken_as_vec().as_slice(),
+                   [[-10_i32, -10], [10, 11]]);
 
         for i in &[-8, -7, 8] {
             r.take(*i);
         }
-        assert!(r.ranges_taken_as_vec().as_slice() == [[-10, -10], [-8, -7], [8, 8], [10, 11]]);
+        assert_eq!(r.ranges_taken_as_vec().as_slice(),
+                   [[-10, -10], [-8, -7], [8, 8], [10, 11]]);
 
         for i in &[-9, 9] {
             r.take(*i);
         }
-        assert!(r.ranges_taken_as_vec().as_slice() == [[-10_i32, -7], [8, 11]]);
+        assert_eq!(r.ranges_taken_as_vec().as_slice(),
+                   [[-10_i32, -7], [8, 11]]);
 
         for i in &[-9, 9] {
             r.release(*i);
         }
-        assert!(r.ranges_taken_as_vec().as_slice() == [[-10, -10], [-8, -7], [8, 8], [10, 11]]);
+        assert_eq!(r.ranges_taken_as_vec().as_slice(),
+                   [[-10, -10], [-8, -7], [8, 8], [10, 11]]);
 
         for i in &[8, 10, 11] {
             r.release(*i);
         }
-        assert!(r.ranges_taken_as_vec().as_slice() == [[-10, -10], [-8, -7]]);
+        assert_eq!(r.ranges_taken_as_vec().as_slice(),
+                   [[-10, -10], [-8, -7]]);
 
         for i in &[-10, -8, -7] {
             r.release(*i);
