@@ -1186,7 +1186,4 @@ impl<TOrd: RType> RangeTree<TOrd> {
 }
 
 #[cfg(test)]
-#[path="tests_rangetree.rs"] mod test_rangetree;
-
-#[cfg(test)]
-#[path="tests_mempool.rs"] mod test_mempool;
+mod tests_mempool;

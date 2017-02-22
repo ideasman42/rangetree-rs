@@ -1,7 +1,9 @@
 // Apache License, Version 2.0
 // (c) Campbell Barton, 2016
 
-use RangeTree;
+extern crate rangetree;
+
+use rangetree::RangeTree;
 
 #[test]
 fn test_basic_take_release() {
