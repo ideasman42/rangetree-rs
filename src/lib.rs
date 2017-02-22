@@ -514,12 +514,8 @@ mod rb {
             }
 
             if key_cmp(key!(*node_to_remove), key!(*node)) == -1 {
-                if !(*node).left.is_null() {
-                    if (!is_red((*node).left)) &&
-                       (!is_red((*(*node).left).left))
-                    {
-                        node = move_red_to_left(node);
-                    }
+                if !(*node).left.is_null() && !is_red((*node).left) && !is_red((*(*node).left).left) {
+                    node = move_red_to_left(node);
                 }
                 (*node).left = remove_recursive((*node).left, node_to_remove);
             } else {
