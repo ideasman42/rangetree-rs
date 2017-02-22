@@ -345,12 +345,10 @@ mod rb {
     ) -> i32 {
         if key1 == key2 {
             0
+        } else if key1 < key2 {
+            -1
         } else {
-            if key1 < key2 {
-                -1
-            } else {
-                1
-            }
+            1
         }
     }
 
