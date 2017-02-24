@@ -16,12 +16,10 @@ pub trait MemElemUtils {
 
 pub trait MemElem:
     MemElemUtils +
-    Default +
     {}
 
 impl<TElem> MemElem for TElem where TElem:
     MemElemUtils +
-    Default +
     {}
 
 struct MemChunk<TElem: MemElem> {
@@ -60,26 +58,6 @@ impl <TElem: MemElem> MemPool<TElem> {
         self.chunks[0].data.clear();
         debug_assert!(self.chunks[0].data.capacity() == self.chunk_size);
         self.free = ptr::null_mut();
-    }
-
-    #[allow(dead_code)]
-    pub fn alloc_elem(
-        &mut self,
-    ) -> *mut TElem {
-        if self.free.is_null() {
-            if self.chunks.last().unwrap().data.len() == self.chunk_size {
-                self.chunks.push(MemChunk {
-                    data: Vec::with_capacity(self.chunk_size),
-                });
-            }
-            let chunk = self.chunks.last_mut().unwrap();
-            chunk.data.push(TElem::default());
-            chunk.data.last_mut().unwrap()
-        } else {
-            let elem = self.free;
-            self.free = unsafe { (*elem).free_ptr_get() };
-            unsafe { &mut *elem }
-        }
     }
 
     pub fn alloc_elem_from(
