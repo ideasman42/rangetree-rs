@@ -37,10 +37,10 @@ fn test_mempool() {
     let mut p: MemPool<TestElem> = MemPool::new(chunk_size);
 
     for _ in 0..2 {
-        let mut a = unsafe { &mut *p.alloc_elem() };
+        let mut a = unsafe { &mut *p.alloc_elem_from(Default::default()) };
         a.value = 0;
         for i in 1..total {
-            let a_next = p.alloc_elem();
+            let a_next = p.alloc_elem_from(Default::default());
             let a_prev = a;
             a = unsafe { &mut *a_next };
             a.value = i;
