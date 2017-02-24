@@ -514,12 +514,8 @@ mod rb {
             }
 
             if key_cmp(key!(*node_to_remove), key!(*node)) == -1 {
-                if !(*node).left.is_null() {
-                    if (!is_red((*node).left)) &&
-                       (!is_red((*(*node).left).left))
-                    {
-                        node = move_red_to_left(node);
-                    }
+                if !(*node).left.is_null() && !is_red((*node).left) && !is_red((*(*node).left).left) {
+                    node = move_red_to_left(node);
                 }
                 (*node).left = remove_recursive((*node).left, node_to_remove);
             } else {
@@ -863,30 +859,28 @@ impl<TOrd: RType> RangeTree<TOrd> {
             return (ptr::null_mut(), self.list.first);
         } else if value > unsafe { &(*(self.list.last)).range[1] } {
             return (self.list.last, ptr::null_mut());
+        } else if USE_BTREE {
+            let node_next = rb::get_or_upper(self.root, value);
+            if !node_next.is_null() {
+                let node_next = unsafe { &mut *node_next };
+                let node_prev = unsafe { &mut *(*node_next).prev };
+                if (&node_prev.range[1] < value) &&
+                   (&node_next.range[0] > value)
+                {
+                    return (node_prev, node_next)
+                }
+            }
         } else {
-            if USE_BTREE {
-                let node_next = rb::get_or_upper(self.root, value);
-                if !node_next.is_null() {
-                    let node_next = unsafe { &mut *node_next };
-                    let node_prev = unsafe { &mut *(*node_next).prev };
-                    if (&node_prev.range[1] < value) &&
-                       (&node_next.range[0] > value)
-                    {
-                        return (node_prev, node_next)
-                    }
+            let mut node_prev = self.list.first;
+            let mut node_next = unsafe { (*node_prev).next };
+            while !node_next.is_null() {
+                if unsafe {(&(*node_prev).range[1] < value) &&
+                           (&(*node_next).range[0] > value) }
+                {
+                    return (node_prev, node_next)
                 }
-            } else {
-                let mut node_prev = self.list.first;
-                let mut node_next = unsafe { (*node_prev).next };
-                while !node_next.is_null() {
-                    if unsafe {(&(*node_prev).range[1] < value) &&
-                               (&(*node_next).range[0] > value) }
-                    {
-                        return (node_prev, node_next)
-                    }
-                    node_prev = node_next;
-                    node_next = unsafe { (*node_next).next };
-                }
+                node_prev = node_next;
+                node_next = unsafe { (*node_next).next };
             }
         }
         (ptr::null_mut(), ptr::null_mut())
