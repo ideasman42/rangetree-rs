@@ -620,7 +620,7 @@ mod rb {
             if cmp_upper == 0 {
                 n // exact match
             } else if cmp_upper == 1 {
-                debug_assert!(key!(*n) >= &key);
+                debug_assert!(key!(*n) >= key);
                 // n is lower than our best so far
                 if !(*n).left.is_null() {
                     let n_test = get_or_upper_recursive((*n).left, key);
