@@ -579,7 +579,7 @@ mod rb {
             // Check if (n.key >= key)
             // to get the node directly after 'key'
             // return best node and key_lower
-            let cmp_lower = key_cmp(key!(*n), &key);
+            let cmp_lower = key_cmp(key!(*n), key);
             if cmp_lower == 0 {
                 n // exact match
             } else if cmp_lower == -1 {
@@ -620,11 +620,11 @@ mod rb {
             // Check if (n.key >= key)
             // to get the node directly after 'key'
             // return best node and key_upper
-            let cmp_upper = key_cmp(key!(*n), &key);
+            let cmp_upper = key_cmp(key!(*n), key);
             if cmp_upper == 0 {
                 n // exact match
             } else if cmp_upper == 1 {
-                debug_assert!(key!(*n) >= &key);
+                debug_assert!(key!(*n) >= key);
                 // n is lower than our best so far
                 if !(*n).left.is_null() {
                     let n_test = get_or_upper_recursive((*n).left, key);
@@ -831,7 +831,7 @@ impl<TOrd: RType> RangeTree<TOrd> {
         value: &TOrd,
     ) -> *mut Node<TOrd> {
         if USE_BTREE {
-            let node = rb::get_or_lower(self.root, &value);
+            let node = rb::get_or_lower(self.root, value);
             if !node.is_null() {
                 let node = unsafe { &mut *node };
                 if (value >= &node.range[0]) &&
@@ -865,7 +865,7 @@ impl<TOrd: RType> RangeTree<TOrd> {
             return (self.list.last, ptr::null_mut());
         } else {
             if USE_BTREE {
-                let node_next = rb::get_or_upper(self.root, &value);
+                let node_next = rb::get_or_upper(self.root, value);
                 if !node_next.is_null() {
                     let node_next = unsafe { &mut *node_next };
                     let node_prev = unsafe { &mut *(*node_next).prev };
